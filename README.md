@@ -2,10 +2,7 @@
 
 Minimalistic (yet powerful) incremental search package for Atom editor, allowing faster movement across your text. And since a picture is worth a thousand words:
 
-<div style="text-align: center;">
-  ![incsearch-usage](https://cloud.githubusercontent.com/assets/235075/12428826/c221500e-bf08-11e5-98ce-d57e60bae242.gif)
-</div>
-<br/>
+![incsearch-usage](https://cloud.githubusercontent.com/assets/235075/12428826/c221500e-bf08-11e5-98ce-d57e60bae242.gif)
 
 And a little more text for those, who were not convinced. Currently incremental search have following features packed:
 
