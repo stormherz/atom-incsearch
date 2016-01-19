@@ -2,7 +2,7 @@
 
 Minimalistic (yet powerful) incremental search package for Atom editor, allowing faster movement across your text. And since a picture is worth a thousand words:
 
-
+![incsearch-usage](https://cloud.githubusercontent.com/assets/235075/12428826/c221500e-bf08-11e5-98ce-d57e60bae242.gif)
 
 And a little more text for those, who were not convinced. Currently incremental search have following features packed:
 
@@ -23,7 +23,7 @@ Following key bindings will work only when cursor is in the search field, allowi
 | Key binding | Command | Description |
 |-------------|---------|-------------|
 | <div style="width: 115px"><kbd>F3</kbd></div> | `incsearch:goto:next-match` | Moves cursor to next match |
-| <div style="width: 115px"><kbd>Shift</kbd> + <kbd>F3</kbd></div> | `incsearch:goto:next-match` | Moves cursor to previous match |
+| <div style="width: 115px"><kbd>Shift</kbd> + <kbd>F3</kbd></div> | `incsearch:goto:prev-match` | Moves cursor to previous match |
 | <div style="width: 115px"><kbd>Ctrl</kbd> + <kbd>A</kbd></div> | `incsearch:toggle-option:highlight_all` | Toggles "Highlight all" option, which will mark all of the matches, instead of a current one |
 | <div style="width: 115px"><kbd>Ctrl</kbd> + <kbd>R</kbd></div> | `incsearch:toggle-option:regex` | Toggles "Search by regular expression" option, which will allow searching by regular expression |
 | <div style="width: 115px"><kbd>Ctrl</kbd> + <kbd>S</kbd></div> | `incsearch:toggle-option:case_sensitive` | Toggles "Case sensitive" option, which will allow case sensitive search |
