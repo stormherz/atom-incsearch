@@ -1,0 +1,77 @@
+// The ui-variables file is provided by base themes provided by Atom.
+//
+// See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
+// for a full listing of what's available.
+@import "ui-variables";
+
+.incsearch {
+  font-size: @font-size;
+
+  width: 100%;
+  height: 3.2rem;
+  padding: 5px;
+
+  background-color: @app-background-color;
+
+  z-index: 9999;
+
+  .layout {
+    display: flex;
+
+    input {
+      display: inline-flex;
+      width: 100%;
+      font-size: 1.3rem;
+      height: 2.5rem;
+      line-height: 2.5rem;
+
+      flex-grow: 2;
+      padding: 5px;
+      margin-right: 5px;
+
+      color: @text-color;
+      border: 1px solid @input-border-color;
+      background-color: @input-background-color;
+      border-radius: @component-border-radius;
+    }
+
+    .buttons {
+      display: inline-flex;
+      width: 12rem; // fix for strange behaviour of atom button selection
+
+      .btn {
+        width: 3.8rem;
+        height: 2.5rem;
+        line-height: 2.5rem;
+        margin-top: 0; // fix for negative margin of atom grouped buttons
+      }
+
+      .regex, .case_sensitive {
+        font-weight: bold;
+        font-size: 1.4rem;
+      }
+
+      .icon::before {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+atom-text-editor .incsearch-highlight,
+atom-text-editor::shadow .incsearch-highlight {
+  .region {
+    border: 1px solid @input-background-color;
+    border-radius: @component-border-radius;
+    background: @input-background-color;
+  }
+}
+
+atom-text-editor .incsearch-current,
+atom-text-editor::shadow .incsearch-current {
+  .region {
+    border: 1px solid @text-color-warning;
+    border-radius: @component-border-radius;
+    background: @input-background-color;
+  }
+}

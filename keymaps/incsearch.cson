@@ -1,0 +1,17 @@
+# Keybindings require three things to be fully defined: A selector that is
+# matched against the focused element, the keystroke and the command to
+# execute.
+#
+# Below is a basic keybinding which registers on all platforms by applying to
+# the root workspace element.
+
+# For more detailed documentation see
+# https://atom.io/docs/latest/behind-atom-keymaps-in-depth
+'atom-workspace':
+  'ctrl-i': 'incsearch:toggle'
+'.incsearch':
+  'ctrl-a': 'incsearch:toggle-option:highlight_all'
+  'ctrl-r': 'incsearch:toggle-option:regex'
+  'ctrl-s': 'incsearch:toggle-option:case_sensitive'
+  'f3': 'incsearch:goto:next-match'
+  'shift-f3': 'incsearch:goto:prev-match'
