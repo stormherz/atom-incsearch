@@ -1,15 +1,14 @@
 {
   "name": "incsearch",
   "main": "./lib/incsearch",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Minimalistic incremental search for Atom editor",
   "keywords": [
     "atom incremental search",
     "incremental search",
     "atom search"
   ],
-  "activationCommands": {
-  },
+  "activationCommands": {},
   "repository": "https://github.com/Stormherz/atom-incsearch",
   "bugs": "https://github.com/Stormherz/atom-incsearch/issues",
   "license": "MIT",
@@ -20,6 +19,5 @@
     "jquery": "~2.2.0"
   },
   "author": "Vladimir Shvets <stormherz@gmail.com>",
-  "contributors": [
-  ]
+  "contributors": []
 }
