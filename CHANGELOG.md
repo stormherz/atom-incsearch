@@ -1,4 +1,10 @@
 
+## 0.2.1
+21 January 2015
+
+* Fixed bug when next match was not selected, when cursor is placed after last match
+* Changed search panel toggling method
+
 ## 0.2.0
 20 January 2015
 
