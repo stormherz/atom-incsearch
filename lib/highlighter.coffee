@@ -109,6 +109,8 @@ class Highlighter
         @currentMarker = marker
       else
         @currentMarker = @selectFollowingInHighlights 'next'
+        if !@currentMarker and @highlights[0]
+          @currentMarker = @highlights[0]
 
       @editor.setCursorBufferPosition @currentMarker.getStartBufferPosition() if @currentMarker
 
@@ -141,6 +143,8 @@ class Highlighter
         @currentMarker = marker
       else
         @currentMarker = @selectFollowingInHighlights 'prev'
+        if !@currentMarker and @highlights[@highlights.length - 1]
+          @currentMarker = @highlights[@highlights.length - 1]
 
       @editor.setCursorBufferPosition @currentMarker.getStartBufferPosition() if @currentMarker
     else
@@ -182,16 +186,17 @@ class Highlighter
     @editor = editor
 
   # Deactivate highlighter, unbind from editor
-  deactivate: (accept) ->
-    # remove selection if search was closed without accepting
-    if !accept
-      sel = @editor.getLastSelection() if @editor
-      sel.clear() if sel
-      @editor.setCursorBufferPosition @currentMarker.getStartBufferPosition() if @currentMarker and @editor
+  deactivate: (accept, destroyed) ->
+    if !destroyed
+      # remove selection if search was closed without accepting
+      if !accept and @editor
+        sel = @editor.getLastSelection()
+        sel.clear() if sel
+        @editor.setCursorBufferPosition @currentMarker.getStartBufferPosition() if @currentMarker
 
-    cursorPos = @currentMarker.getStartBufferPosition() if @currentMarker
-    @unmatchAll()
-    @editor.setCursorBufferPosition cursorPos if @currentMarker and @editor
+      cursorPos = @currentMarker.getStartBufferPosition() if @currentMarker
+      @unmatchAll()
+      @editor.setCursorBufferPosition cursorPos if @currentMarker and @editor
 
     @query = ''
     @editor = null

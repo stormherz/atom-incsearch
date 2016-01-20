@@ -86,7 +86,7 @@ module.exports = Incsearch =
     @subscriptions.add atom.commands.add 'atom-workspace', 'incsearch:toggle': =>
       # deferred loading
       @load() if !@loaded
-      @toggle()
+      @show()
 
   deactivate: ->
     if @loaded
@@ -99,22 +99,26 @@ module.exports = Incsearch =
   serialize: ->
     options: @options
 
-  hide: (accept) ->
+  hide: (accept, destroyed) ->
     return if !@panel.isVisible()
 
-    @highlighter.deactivate(accept)
+    @highlighter.deactivate accept, destroyed
     @panel.hide()
     @view.input.val ''
 
     atom.workspace.getActivePane().activate()
 
   show: ->
-    return if @panel.isVisible()
+    if @panel.isVisible()
+      @view.input.focus()
+      return
 
-    @highlighter.activate atom.workspace.getActiveTextEditor()
+    # handle editor events
+    editor = atom.workspace.getActiveTextEditor()
+    editor.onDidDestroy => @hide false, true
+
+    # activate highlighter
+    @highlighter.activate editor
 
     @panel.show()
     @view.input.focus()
-
-  toggle: ->
-    if @panel.isVisible() then @hide() else @show()
