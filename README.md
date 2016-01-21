@@ -16,7 +16,7 @@ Pretty straightforward and obvious, but I'll be glad to hear your proposals!
 
 | Key binding | Command | Description |
 |-------------|---------|-------------|
-| <div style="width: 115px"><kbd>Ctrl</kbd> + <kbd>I</kbd></div> | `incsearch:toggle` | Toggles incremental search, showing (or hiding) panel with controls |
+| <div style="width: 115px"><kbd>Ctrl</kbd> + <kbd>I</kbd></div> | `incsearch:toggle` | Toggles incremental search panel, showing it, or focusing if it's already visible and your cursor is in the editor |
 
 Following key bindings will work only when cursor is in the search field, allowing faster option switching and traversing results.
 
