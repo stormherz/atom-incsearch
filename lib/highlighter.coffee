@@ -14,7 +14,7 @@ class Highlighter
   update: () ->
     @match @query
 
-  # Iterates over found matches, highlights them, moves cursor to closest match
+  # Iterates over found matches, highlights them
   iterateMatches: (match) =>
     marker = @editor.markBufferRange match.range, (
       persistent: false,
@@ -60,7 +60,14 @@ class Highlighter
         @iterateMatches(match)
 
     # move cursor to closest match
-    @gotoNextMatch()
+    cp = @editor.getCursorBufferPosition()
+    @gotoNextMatch cp
+
+  # Return next cursor position in the specified direction
+  getCursorPosition: (dir) ->
+    return null unless @editor
+    pos = @editor.getCursorBufferPosition()
+    if dir == 'next' then new Point pos.row, pos.column + 1 else new Point pos.row, pos.column - 1
 
   # Selects single following match in next and previous directions
   selectFollowing: (dir, range) ->
@@ -81,12 +88,15 @@ class Highlighter
     matchFound
 
   # Finds next match in hidhlights
-  selectFollowingInHighlights: (dir) ->
-    cursor = @editor.getCursorBufferPosition()
-    data = if dir == 'next' then @highlights else @highlights.clone().reverse()
+  selectFollowingInHighlights: (dir, from) ->
+    # cursor = @editor.getCursorBufferPosition()
+    cursor = if from then from else @getCursorPosition dir
+    return null unless cursor
+
+    data = if dir == 'next' then @highlights else @highlights[..].reverse()
 
     for marker in data
-      start = marker.getEndBufferPosition()
+      start = marker.getStartBufferPosition()
 
       if dir == 'next'
         return marker if (start.row == cursor.row and start.column >= cursor.column) or
@@ -98,71 +108,55 @@ class Highlighter
     return null
 
   # Selects next match
-  gotoNextMatch: ->
+  gotoNextMatch: (from = null) ->
     if @options.highlight_all
       # move to next match
-      if @currentMarker
-        index = @highlights.indexOf @currentMarker
-        return if index == -1
-
-        marker = (if @highlights[index + 1] then @highlights[index + 1] else @highlights[0])
-        @currentMarker = marker
-      else
-        @currentMarker = @selectFollowingInHighlights 'next'
-        if !@currentMarker and @highlights[0]
-          @currentMarker = @highlights[0]
-
+      @currentMarker = @selectFollowingInHighlights 'next', from
+      if !@currentMarker and @highlights[0]
+        @currentMarker = @highlights[0]
       @editor.setCursorBufferPosition @currentMarker.getStartBufferPosition() if @currentMarker
 
     else
       # find next match
-      startPosition = (if @currentMarker then @currentMarker.getEndBufferPosition() else @editor.getCursorBufferPosition())
+      startPosition = if from then from else @getCursorPosition 'next'
       range = new Range startPosition, @editor.getBuffer().getEndPosition()
 
       # try to
-      matchFound = @selectFollowing('next', range)
+      matchFound = @selectFollowing 'next', range
       if !matchFound
         # no following match found - starting from top
         range = new Range (new Point 0, 0), @editor.getCursorBufferPosition()
-        @selectFollowing('next', range)
+        @selectFollowing 'next', range
 
     # add match selection
     if @currentMarker
       @updateDecorations()
-      @editor.setSelectedBufferRange @currentMarker.getBufferRange(), reversed: true
 
   # Select previous match
   gotoPrevMatch: ->
     if @options.highlight_all
       # move to previous match
-      if @currentMarker
-        index = @highlights.indexOf @currentMarker
-        return if index == -1
-
-        marker = if @highlights[index - 1] then @highlights[index - 1] else @highlights[@highlights.length - 1]
-        @currentMarker = marker
-      else
-        @currentMarker = @selectFollowingInHighlights 'prev'
-        if !@currentMarker and @highlights[@highlights.length - 1]
-          @currentMarker = @highlights[@highlights.length - 1]
-
+      @currentMarker = @selectFollowingInHighlights 'prev'
+      if !@currentMarker and @highlights[@highlights.length - 1]
+        @currentMarker = @highlights[@highlights.length - 1]
       @editor.setCursorBufferPosition @currentMarker.getStartBufferPosition() if @currentMarker
+
     else
       # find previous match
-      endPosition = (if @currentMarker then @currentMarker.getStartBufferPosition() else @editor.getCursorBufferPosition())
+      # endPosition = (if @currentMarker then @currentMarker.getStartBufferPosition() else @editor.getCursorBufferPosition())
+      endPosition = @editor.getCursorBufferPosition()
       range = new Range (new Point 0, 0), endPosition
 
       # try to
-      matchFound = @selectFollowing('prev', range)
+      matchFound = @selectFollowing 'prev', range
       if !matchFound
         # no following match found - starting from top
         range = new Range @editor.getCursorBufferPosition(), @editor.getBuffer().getEndPosition()
-        @selectFollowing('prev', range)
+        @selectFollowing 'prev', range
 
     # add match selection
     if @currentMarker
       @updateDecorations()
-      @editor.setSelectedBufferRange @currentMarker.getBufferRange(), reversed: true
 
   # Update matched marker decorations
   updateDecorations: ->
@@ -189,10 +183,13 @@ class Highlighter
   deactivate: (accept, destroyed) ->
     if !destroyed
       # remove selection if search was closed without accepting
-      if !accept and @editor
-        sel = @editor.getLastSelection()
-        sel.clear() if sel
-        @editor.setCursorBufferPosition @currentMarker.getStartBufferPosition() if @currentMarker
+      if @editor
+        if accept
+          @editor.setSelectedBufferRange @currentMarker.getBufferRange(), reversed: true if @currentMarker
+        else
+          sel = @editor.getLastSelection()
+          sel.clear() if sel
+          @editor.setCursorBufferPosition @currentMarker.getStartBufferPosition() if @currentMarker
 
       cursorPos = @currentMarker.getStartBufferPosition() if @currentMarker
       @unmatchAll()

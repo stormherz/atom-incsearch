@@ -40,6 +40,12 @@ module.exports = Incsearch =
     @view.onAccept => @hide(true)
     @view.onOptionChange (e) => @changeOption(e.option, e.value)
     @view.onInputChange (query) => @highlightQuery(query)
+    @view.onNextMatch =>
+      return unless @panel and @panel.visible
+      @highlighter.gotoNextMatch()
+    @view.onPrevMatch =>
+      return unless @panel and @panel.visible
+      @highlighter.gotoPrevMatch()
 
     # highlighter configuration
     @highlighter = new Highlighter @options
@@ -58,12 +64,20 @@ module.exports = Incsearch =
 
     # manageing subscriptions
     @subscriptions.add atom.commands.add 'atom-workspace', 'core:cancel': => @hide()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'incsearch-global:goto:next-match': =>
+      return unless @panel and @panel.visible
+      @highlighter.gotoNextMatch()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'incsearch-global:goto:prev-match': =>
+      return unless @panel and @panel.visible
+      @highlighter.gotoPrevMatch()
     @subscriptions.add atom.commands.add '.incsearch', 'incsearch:toggle-option:highlight_all': highlightToggler
     @subscriptions.add atom.commands.add '.incsearch', 'incsearch:toggle-option:regex': regexToggler
     @subscriptions.add atom.commands.add '.incsearch', 'incsearch:toggle-option:case_sensitive': caseToggler
     @subscriptions.add atom.commands.add '.incsearch', 'incsearch:goto:next-match': =>
+      return unless @panel and @panel.visible
       @highlighter.gotoNextMatch()
     @subscriptions.add atom.commands.add '.incsearch', 'incsearch:goto:prev-match': =>
+      return unless @panel and @panel.visible
       @highlighter.gotoPrevMatch()
 
     # set loaded state

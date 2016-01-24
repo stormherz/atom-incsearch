@@ -22,13 +22,15 @@ Following key bindings will work only when cursor is in the search field, allowi
 
 | Key binding | Command | Description |
 |-------------|---------|-------------|
-| <div style="width: 115px"><kbd>F3</kbd></div> | `incsearch:goto:next-match` | Moves cursor to next match |
-| <div style="width: 115px"><kbd>Shift</kbd> + <kbd>F3</kbd></div> | `incsearch:goto:prev-match` | Moves cursor to previous match |
+| <div style="width: 115px"><kbd>F3</kbd>, <kbd>Alt</kbd> + <kbd>Down</kbd></div> | `incsearch:goto:next-match` | Moves cursor to next match |
+| <div style="width: 115px"><kbd>Shift</kbd> + <kbd>F3</kbd>, <kbd>Alt</kbd> + <kbd>Up</kbd></div> | `incsearch:goto:prev-match` | Moves cursor to previous match |
 | <div style="width: 115px"><kbd>Ctrl</kbd> + <kbd>A</kbd></div> | `incsearch:toggle-option:highlight_all` | Toggles "Highlight all" option, which will mark all of the matches, instead of a current one |
 | <div style="width: 115px"><kbd>Ctrl</kbd> + <kbd>R</kbd></div> | `incsearch:toggle-option:regex` | Toggles "Search by regular expression" option, which will allow searching by regular expression |
 | <div style="width: 115px"><kbd>Ctrl</kbd> + <kbd>S</kbd></div> | `incsearch:toggle-option:case_sensitive` | Toggles "Case sensitive" option, which will allow case sensitive search |
 
 While in search field you can decide how you will return to editing your text. If you press <kbd>Enter</kbd> - search panel will be closed and current match will be selected in editor. If you press <kbd>Escape</kbd> - search panel will also be closed, but no selection will be made, leaving cursor just before last match.
+
+When incremental search panel is active and you're working with the text in the editor - you can also move between matches, using <kbd>Alt</kbd> + <kbd>Down</kbd> for next match and <kbd>Alt</kbd> + <kbd>Up</kbd> for previous.
 
 ## Styling
 

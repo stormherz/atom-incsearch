@@ -59,6 +59,10 @@ class IncsearchView
         @emitter.emit 'close'
       if e.keyCode == 13
         @emitter.emit 'accept'
+      if e.keyCode == 40 and e.altKey
+        @emitter.emit 'next-match'
+      if e.keyCode == 38 and e.altKey
+        @emitter.emit 'prev-match'
 
     # query change
     @input.on 'keyup', (e) =>
@@ -69,17 +73,13 @@ class IncsearchView
 
     @container.append layout
 
-  onClose: (callback) ->
-    @emitter.on 'close', callback
-
-  onAccept: (callback) ->
-    @emitter.on 'accept', callback
-
-  onOptionChange: (callback) ->
-    @emitter.on 'option-change', callback
-
-  onInputChange: (callback) ->
-    @emitter.on 'input-change', callback
+  # event handlers
+  onClose: (callback) -> @emitter.on 'close', callback
+  onAccept: (callback) -> @emitter.on 'accept', callback
+  onOptionChange: (callback) -> @emitter.on 'option-change', callback
+  onInputChange: (callback) -> @emitter.on 'input-change', callback
+  onNextMatch: (callback) -> @emitter.on 'next-match', callback
+  onPrevMatch: (callback) -> @emitter.on 'prev-match', callback
 
   serialize: ->
 

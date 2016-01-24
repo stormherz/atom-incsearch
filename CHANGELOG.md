@@ -1,4 +1,11 @@
 
+## 0.3.0
+24 January 2015
+
+* Added `alt-down` and `alt-up` keybindings for next and previous match respectively (in editor and search panel)
+* Fixed issue with missing match highlight border
+* Added tests
+
 ## 0.2.1
 21 January 2015
 
