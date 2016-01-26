@@ -1,14 +1,18 @@
-{Point, Range} = require 'atom'
+{Point, Range, Emitter} = require 'atom'
 
 module.exports =
 class Highlighter
   constructor: (options) ->
+    @emitter = new Emitter
     @editor = null
     @query = ''
     @highlights = []
     @currentMarker = null
 
     @options = options
+
+  onMatchesChange: (callback) ->
+    @emitter.on 'matches-change', callback
 
   # Update highlighter rendering
   update: () ->
@@ -29,16 +33,17 @@ class Highlighter
     @highlights.push marker
 
   # Creates regular expression object with options, based on highlighter configuration
-  createRegex: (query) ->
+  createRegex: (query, options = null) ->
+    options = if options then options else @options
     # escape regexp special symbols if searching plain text
-    if !@options.regex
+    if !options.regex
       query = query.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
 
     # create appropriate regexp object
-    if @options.highlight_all
-      if @options.case_sensitive then new RegExp(query, 'g') else new RegExp(query, 'ig')
+    if options.highlight_all
+      if options.case_sensitive then new RegExp(query, 'g') else new RegExp(query, 'ig')
     else
-      if @options.case_sensitive then new RegExp(query) else new RegExp(query, 'i')
+      if options.case_sensitive then new RegExp(query) else new RegExp(query, 'i')
 
   # Add highlight for specified query
   match: (query) ->
@@ -50,18 +55,27 @@ class Highlighter
     @unmatchAll()
 
     # iterate over matches
+    search = @createRegex(query)
     if @options.highlight_all
-      @editor.scan @createRegex(query), (match) =>
+      @editor.scan search, (match) =>
         @iterateMatches(match)
     else
       startPosition = (if @currentMarker then @currentMarker.getEndBufferPosition() else @editor.getCursorBufferPosition())
       range = new Range startPosition, @editor.getBuffer().getEndPosition()
-      @editor.scanInBufferRange @createRegex(query), range, (match) =>
+      @editor.scanInBufferRange search, range, (match) =>
         @iterateMatches(match)
 
     # move cursor to closest match
     cp = @editor.getCursorBufferPosition()
     @gotoNextMatch cp
+
+    # update matches info
+    if not @options.highlight_all
+      count = 0
+      search = @createRegex query, highlight_all: true, case_sensitive: @options.case_sensitive,
+        regex: @options.regex
+      @editor.scan search, -> count++
+      @emitter.emit 'matches-change', count: count
 
   # Return next cursor position in the specified direction
   getCursorPosition: (dir) ->
@@ -116,6 +130,10 @@ class Highlighter
         @currentMarker = @highlights[0]
       @editor.setCursorBufferPosition @currentMarker.getStartBufferPosition() if @currentMarker
 
+      # update matches info
+      index = @highlights.indexOf @currentMarker
+      @emitter.emit 'matches-change', current: index + 1, count: @highlights.length
+
     else
       # find next match
       startPosition = if from then from else @getCursorPosition 'next'
@@ -140,6 +158,10 @@ class Highlighter
       if !@currentMarker and @highlights[@highlights.length - 1]
         @currentMarker = @highlights[@highlights.length - 1]
       @editor.setCursorBufferPosition @currentMarker.getStartBufferPosition() if @currentMarker
+
+      # update matches info
+      index = @highlights.indexOf @currentMarker
+      @emitter.emit 'matches-change', current: index + 1, count: @highlights.length
 
     else
       # find previous match

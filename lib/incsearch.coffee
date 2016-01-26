@@ -49,6 +49,8 @@ module.exports = Incsearch =
 
     # highlighter configuration
     @highlighter = new Highlighter @options
+    @highlighter.onMatchesChange (matches) =>
+      @view.updateMatches matches
 
     # add view
     @panel = atom.workspace.addBottomPanel(item: @view.getElement(), visible: false)
@@ -119,6 +121,7 @@ module.exports = Incsearch =
     @highlighter.deactivate accept, destroyed
     @panel.hide()
     @view.input.val ''
+    @view.updateMatches()
 
     atom.workspace.getActivePane().activate()
 

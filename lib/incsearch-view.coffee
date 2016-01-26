@@ -50,7 +50,10 @@ class IncsearchView
 
     @buttons.append @btnCase
 
+    @matches = $ '<div/>', class: 'matches', text: '0 matches'
+
     layout.append @input
+    layout.append @matches
     layout.append @buttons
 
     # closing on escape press
@@ -72,6 +75,18 @@ class IncsearchView
       @emitter.emit 'input-change', @input.val()
 
     @container.append layout
+
+  updateMatches: (matches) ->
+    if not matches
+      @matches.text '0 matches'
+      return
+
+    if matches.current
+      text = "#{matches.current} of #{matches.count} match"
+    else
+      text = "#{matches.count} #{if matches.count == 1 then 'match' else 'matches'}"
+
+    @matches.text text
 
   # event handlers
   onClose: (callback) -> @emitter.on 'close', callback
