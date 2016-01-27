@@ -1,4 +1,9 @@
 
+## 0.3.2
+27 January 2016
+
+* Fixed key bindings for MacOS
+
 ## 0.3.1
 26 January 2016
 

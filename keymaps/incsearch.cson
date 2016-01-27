@@ -7,13 +7,27 @@
 
 # For more detailed documentation see
 # https://atom.io/docs/latest/behind-atom-keymaps-in-depth
-'atom-workspace':
+
+# Windows, Linux
+'.platform-win32 atom-workspace, .platform-linux atom-workspace':
   'ctrl-i': 'incsearch:toggle'
   'alt-down': 'incsearch-global:goto:next-match'
   'alt-up': 'incsearch-global:goto:prev-match'
-'.incsearch':
+'.platform-win32 .incsearch, .platform-linux .incsearch':
   'ctrl-a': 'incsearch:toggle-option:highlight_all'
   'ctrl-r': 'incsearch:toggle-option:regex'
   'ctrl-s': 'incsearch:toggle-option:case_sensitive'
+  'f3': 'incsearch:goto:next-match'
+  'shift-f3': 'incsearch:goto:prev-match'
+
+# Mac OS
+'.platform-darwin atom-workspace':
+  'cmd-i': 'incsearch:toggle'
+  'alt-down': 'incsearch-global:goto:next-match'
+  'alt-up': 'incsearch-global:goto:prev-match'
+'.platform-darwin .incsearch':
+  'cmd-a': 'incsearch:toggle-option:highlight_all'
+  'cmd-r': 'incsearch:toggle-option:regex'
+  'cmd-s': 'incsearch:toggle-option:case_sensitive'
   'f3': 'incsearch:goto:next-match'
   'shift-f3': 'incsearch:goto:prev-match'
