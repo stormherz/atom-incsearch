@@ -102,7 +102,10 @@ module.exports = Incsearch =
     @subscriptions.add atom.commands.add 'atom-workspace', 'incsearch:toggle': =>
       # deferred loading
       @load() if !@loaded
-      @show()
+      if @panel and @panel.visible
+        @highlighter.gotoNextMatch()
+      else
+        @show()
 
   deactivate: ->
     if @loaded

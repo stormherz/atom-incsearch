@@ -1,4 +1,9 @@
 
+## 0.3.3
+16 February 2016
+
+* Added `ctrl-i` as an alias for next match keybinding
+
 ## 0.3.2
 27 January 2016
 

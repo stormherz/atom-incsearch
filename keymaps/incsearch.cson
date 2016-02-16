@@ -13,6 +13,7 @@
   'ctrl-i': 'incsearch:toggle'
   'alt-down': 'incsearch-global:goto:next-match'
   'alt-up': 'incsearch-global:goto:prev-match'
+  'ctrl-shift-i': 'incsearch-global:goto:prev-match'
 '.platform-win32 .incsearch, .platform-linux .incsearch':
   'ctrl-a': 'incsearch:toggle-option:highlight_all'
   'ctrl-r': 'incsearch:toggle-option:regex'
@@ -25,6 +26,7 @@
   'cmd-i': 'incsearch:toggle'
   'alt-down': 'incsearch-global:goto:next-match'
   'alt-up': 'incsearch-global:goto:prev-match'
+  'cmd-shift-i': 'incsearch-global:goto:prev-match'
 '.platform-darwin .incsearch':
   'cmd-a': 'incsearch:toggle-option:highlight_all'
   'cmd-r': 'incsearch:toggle-option:regex'
