@@ -141,4 +141,7 @@ module.exports = Incsearch =
     @highlighter.activate editor
 
     @panel.show()
+
+    selection = editor.getLastSelection()
+    @view.input.val selection.getText()
     @view.input.focus()
