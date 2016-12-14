@@ -21,13 +21,12 @@ class Highlighter
   # Iterates over found matches, highlights them
   iterateMatches: (match) =>
     marker = @editor.markBufferRange match.range, (
-      persistent: false,
       invalidate: 'never'
     )
 
     @editor.decorateMarker marker, (
       type: 'highlight',
-      class: 'incsearch-highlight',
+      class: 'incsearch-highlight'
     )
 
     @highlights.push marker

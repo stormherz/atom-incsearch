@@ -135,6 +135,7 @@ module.exports = Incsearch =
 
     # handle editor events
     editor = atom.workspace.getActiveTextEditor()
+    return if !editor
     editor.onDidDestroy => @hide false, true
 
     # activate highlighter
